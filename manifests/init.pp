@@ -13,9 +13,10 @@ class ccgcloud () inherits ccgcloud::params {
     ensure  => present
   }
 
-  file {'/etc/default/qemu-kvm':
-     require => Package[$ccgcloud::packages],
-     content => template('ccgcompute/grub.erb'),
-  }
+  # ???
+  #file {'/etc/default/qemu-kvm':
+  #   require => Package[$ccgcloud::packages],
+  #   content => template('ccgcompute/grub.erb'),
+  #}
 
 }
