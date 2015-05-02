@@ -15,17 +15,24 @@ class ccgcloud::params {
     }
 
     $absent_packages = [
+      'ufw',
     ]
 
     $packages = [
       'bridge-utils',
+      'ethtool',
+      'gdisk',
+      'iotop',
+      'iptraf',
+      'mysql-client',
+      'qemu-kvm',
+      'strace',
+      'sysfsutils',
+      'tcpdump',
+      'tmux',
+      'tree',
+      'virt-manager',
       'vlan',
       'xfsprogs',
-      'mysql-client',
-      'gdisk',
-      'sysfsutils',
-      'virt-manager',
-      'qemu-kvm',
-      'tmux'
     ]
 }
