@@ -15,6 +15,7 @@ class ccgcloud::params {
     }
 
     $absent_packages = [
+      'resolvconf',
       'ufw',
     ]
 
