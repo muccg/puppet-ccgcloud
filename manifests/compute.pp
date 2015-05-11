@@ -29,10 +29,6 @@ class ccgcloud::compute {
     'python-novaclient',
   ]
 
-  file {'/etc/network/interfaces':
-    content => template('ccgcloud/compute/interfaces.erb'),
-  }
-
   package { $absent_packages:
     ensure  => absent,
     require => Class['ccgcloud::openstack']
@@ -43,12 +39,8 @@ class ccgcloud::compute {
     require => Class['ccgcloud::openstack']
   }
 
-  file { '/usr/local/bin/ccgcompute-setup.sh':
-    ensure  => present,
-    owner   => root,
-    group   => root,
-    mode    => '0755',
-    content => template('ccgcloud/compute/ccgcompute-setup.sh.erb'),
+  file {'/etc/network/interfaces':
+    content => template('ccgcloud/compute/interfaces.erb'),
   }
 
   file { '/usr/local/bin/ccgcompute-network.sh':
@@ -57,12 +49,6 @@ class ccgcloud::compute {
       group   => root,
       mode    => '0755',
       content => template('ccgcloud/compute/ccgcompute-network.sh.erb'),
-  }
-
-  exec {'system initial setup':
-    command  => '/usr/local/bin/ccgcompute-setup.sh',
-    provider => shell,
-    require  => File['/usr/local/bin/ccgcompute-setup.sh']
   }
 
   # TODO This script references neutron, is it still current?
@@ -118,3 +104,18 @@ class ccgcloud::compute {
     subscribe => File['/etc/nova/nova.conf'],
   }
 }
+
+class ccgcloud::compute::setup {
+  file { '/usr/local/bin/ccgcompute-setup.sh':
+    ensure  => present,
+    owner   => root,
+    group   => root,
+    mode    => '0755',
+    content => template('ccgcloud/compute/ccgcompute-setup.sh.erb'),
+  }
+
+  exec {'system initial setup':
+    command  => '/usr/local/bin/ccgcompute-setup.sh',
+    provider => shell,
+    require  => File['/usr/local/bin/ccgcompute-setup.sh']
+  }
