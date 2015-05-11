@@ -1,8 +1,29 @@
 auto lo
 iface lo inet loopback
-auto eth1
-iface eth1 inet manual
+
+# DMZ network
+auto em1.10
+iface em1.10 inet static
+  address <%= dmz_address %>
+  netmask <%= dmz_netmask %>
+  gateway <%= dmz_gateway %>
+  up ifconfig $IFACE promisc
+
+# PUBLIC network
+auto em1.41
+iface em1.41 inet dhcp
+  up ifconfig $IFACE promisc
+
+# DMZ-OpenStack network
+auto em1.40
+iface em1.40 inet manual
   up ifconfig $IFACE 0.0.0.0 up
   up ifconfig $IFACE promisc
-auto eth2
-iface eth2 inet dhcp
+
+# REPLICATION network
+auto em2
+iface em2 inet dhcp
+
+# MANAGEMENT network
+auto em3
+iface em3 inet dhcp
