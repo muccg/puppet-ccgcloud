@@ -2,7 +2,7 @@
 class ccgcloud::tcptuning () {
   file {'/etc/sysctl.d/60-tcptuning.conf':
     content => template('ccgcloud/60-tcptuning.conf.erb'),
-    notify => Exec['tcp-tuning'],
+    notify  => Exec['tcp-tuning'],
   }
 
   exec {'tcp-tuning':
