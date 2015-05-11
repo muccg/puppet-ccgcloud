@@ -43,21 +43,6 @@ class ccgcloud::compute {
     content => template('ccgcloud/compute/interfaces.erb'),
   }
 
-  file { '/usr/local/bin/ccgcompute-network.sh':
-      ensure  => present,
-      owner   => root,
-      group   => root,
-      mode    => '0755',
-      content => template('ccgcloud/compute/ccgcompute-network.sh.erb'),
-  }
-
-  # TODO This script references neutron, is it still current?
-  exec {'system initial network setup':
-    command  => '/usr/local/bin/ccgcompute-network.sh',
-    provider => shell,
-    require  => File['/usr/local/bin/ccgcompute-network.sh']
-  }
-
   exec { '/usr/sbin/dpkg-statoverride --update --add root root 0644 /boot/vmlinuz-`/bin/uname -r` || exit 0': }
 
   file { '/etc/nova/api-paste.ini':
