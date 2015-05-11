@@ -43,8 +43,6 @@ class ccgcloud::compute {
     content => template('ccgcloud/compute/interfaces.erb'),
   }
 
-  exec { '/usr/sbin/dpkg-statoverride --update --add root root 0644 /boot/vmlinuz-`/bin/uname -r` || exit 0': }
-
   file { '/etc/nova/api-paste.ini':
     ensure  => present,
     owner   => root,
@@ -90,6 +88,8 @@ class ccgcloud::compute {
   }
 }
 
+# Looks like a one-off script that was always being called,
+# parked it here as it makes me nervous
 class ccgcloud::compute::setup {
   file { '/usr/local/bin/ccgcompute-setup.sh':
     ensure  => present,
@@ -104,3 +104,4 @@ class ccgcloud::compute::setup {
     provider => shell,
     require  => File['/usr/local/bin/ccgcompute-setup.sh']
   }
+}
