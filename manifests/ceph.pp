@@ -1,20 +1,27 @@
 #
-# TODO
-#  - A lot of code to install one package??
 class ccgcloud::ceph {
 
-    $absent_packages = [
-    ]
+  $absent_packages = [
+  ]
 
-    $packages = [
-        'ceph-deploy'
-    ]
+  $packages = [
+    'ceph-deploy'
+  ]
 
-    package { $absent_packages:
-        ensure  => absent
-    }
+  package { $absent_packages:
+    ensure  => absent
+  }
 
-    package { $packages:
-        ensure  => present
-    }
+  package { $packages:
+    ensure  => present
+  }
+
+  file { '/etc/ceph/ceph.conf':
+    ensure  => present,
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    content => template('ccgcloud/ceph/ceph.conf.erb'),
+    require => Package[$packages],
+  }
 }
