@@ -24,6 +24,7 @@ class ccgcloud::compute {
     'mysql-client',
     'nova-compute',
     'nova-compute-kvm',
+    'cinder-common',
     'openvswitch-common',
     'nova-api-metadata',
     'python-novaclient',
@@ -48,7 +49,7 @@ class ccgcloud::compute {
     owner   => root,
     group   => root,
     mode    => '0644',
-    content => template('ccgcloud/compute/api-paste.ini.erb'),
+    content => template('ccgcloud/compute/nova/api-paste.ini.erb'),
     require => Package[$packages],
     notify  => Service['nova-compute'],
   }
@@ -58,9 +59,29 @@ class ccgcloud::compute {
     owner   => root,
     group   => root,
     mode    => '0644',
-    content => template('ccgcompute/nova.conf.erb'),
+    content => template('ccgcloud/compute/nova/nova.conf.erb'),
     require => Package[$packages],
     notify  => Service['nova-compute'],
+  }
+
+  file { '/etc/cinder/api-paste.ini':
+    ensure  => present,
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    content => template('ccgcloud/compute/cinder/api-paste.ini.erb'),
+    require => Package[$packages],
+    notify  => Service['cinder-volume'],
+  }
+
+  file { '/etc/cinder/cinder.conf':
+    ensure  => present,
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    content => template('ccgcloud/compute/cinder/cinder.conf.erb'),
+    require => Package[$packages],
+    notify  => Service['cinder-volume'],
   }
 
   service { 'nova-compute':
@@ -69,6 +90,14 @@ class ccgcloud::compute {
     provider  => upstart,
     require   => Package[$packages],
     subscribe => File['/etc/nova/nova.conf'],
+  }
+
+  service { 'cinder-volume':
+    ensure    => running,
+    enable    => true,
+    provider  => upstart,
+    require   => Package[$packages],
+    subscribe => File['/etc/cinder/cinder.conf'],
   }
 
   service { 'nova-network':
