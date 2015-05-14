@@ -1,5 +1,5 @@
 #
-class galeraarbitrator (
+class ccgcloud::galeraarbitrator (
   $galera_nodes = undef,
   $galera_group = undef,
   $galera_options = undef,
