@@ -1,5 +1,5 @@
 name         'muccg-ccgcloud'
-version      '2.3.1'
+version      '2.3.2'
 
 author       'Centre for Comparative Genomics'
 license      'GNU GPL Version 3'
