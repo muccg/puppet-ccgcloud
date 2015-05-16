@@ -59,7 +59,7 @@ s3_host=<%= @s3_host %>
 # RABBITMQ
 rpc_backend = nova.rpc.impl_kombu
 rabbit_host = <%= @tabbit_host %>
-rabbit_port = <%= @rabbit_port %>
+rabbit_port = 5672
 
 # GLANCE
 image_service=nova.image.glance.GlanceImageService
@@ -75,9 +75,9 @@ vncserver_listen=<%= @vncserver_listen %>
 auth_strategy=keystone
 [keystone_authtoken]
 auth_host = <%= @auth_host %>
-auth_port = <%= @auth_port %>
+auth_port = 35357
 auth_protocol = http
-admin_tenant_name = <%= @admin_tenant_name %>
+admin_tenant_name = service
 admin_user = <%= @admin_user %>
 admin_password = <%= @admin_password %>
 signing_dirname = /tmp/keystone-signing-nova
