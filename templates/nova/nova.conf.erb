@@ -60,8 +60,21 @@ s3_host=<%= @s3_host %>
 
 # RABBITMQ
 rpc_backend = nova.rpc.impl_kombu
-rabbit_host = <%= @rabbit_host %>
 rabbit_port = 5672
+# Use HA queues in RabbitMQ (x-ha-policy: all). If you change
+# this option, you must wipe the RabbitMQ database. (boolean
+# value)
+#rabbit_ha_queues=false
+rabbit_ha_queues=true
+# RabbitMQ HA cluster host:port pairs. (list value)
+rabbit_hosts=<%= @rabbit_hosts %>
+# The RabbitMQ userid. (string value)
+rabbit_userid=<%= @rabbit_userid %>
+# The RabbitMQ password. (string value)
+rabbit_password=<%= @rabbit_password %>
+# The RabbitMQ virtual host. (string value)
+rabbit_virtual_host=<%= @rabbit_virtual_host %>
+
 
 # GLANCE
 image_service=nova.image.glance.GlanceImageService

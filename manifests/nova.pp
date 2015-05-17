@@ -6,7 +6,6 @@ class ccgcloud::nova::conf (
   $public_interface              = undef,
   $ec2_dmz_host                  = undef,
   $s3_host                       = undef,
-  $rabbit_host                   = undef,
   $glance_api_servers            = undef,
   $novncproxy_base_url           = undef,
   $vncserver_proxyclient_address = undef,
@@ -14,6 +13,10 @@ class ccgcloud::nova::conf (
   $keystone_auth_host            = undef,
   $keystone_admin_user           = undef,
   $keystone_admin_password       = undef,
+  $rabbit_hosts                  = undef,
+  $rabbit_userid                 = undef,
+  $rabbit_password               = undef,
+  $rabbit_virtual_host           = '/',
 ) {
 
   file { '/etc/nova/api-paste.ini':
