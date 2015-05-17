@@ -1,5 +1,19 @@
 #
-class ccgcloud::nova::conf {
+class ccgcloud::nova::conf (
+  $sql_connection                = undef,
+  $my_ip                         = undef,
+  $public_interface              = undef,
+  $ec2_dmz_host                  = undef,
+  $s3_host                       = undef,
+  $rabbit_host                   = undef,
+  $glance_api_servers            = undef,
+  $novncproxy_base_url           = undef,
+  $vncserver_proxyclient_address = undef,
+  $vncserver_listen              = undef,
+  $keystone_auth_host            = undef,
+  $keystone_admin_user           = undef,
+  $keystone_admin_password       = undef,
+) {
 
   file { '/etc/nova/api-paste.ini':
     ensure  => present,
