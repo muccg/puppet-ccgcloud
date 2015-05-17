@@ -1,5 +1,6 @@
 #
 class ccgcloud::nova::conf (
+  $memcached_servers             = undef,
   $sql_connection                = undef,
   $my_ip                         = undef,
   $public_interface              = undef,
