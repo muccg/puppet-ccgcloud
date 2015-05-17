@@ -204,22 +204,22 @@ bind_host=<%= @bind_host %>
 #rabbit_port=5672
 
 # RabbitMQ HA cluster host:port pairs. (list value)
-#rabbit_hosts=$rabbit_host:$rabbit_port
+rabbit_hosts=<%= @rabbit_hosts %>
 
 # Connect over SSL for RabbitMQ. (boolean value)
 #rabbit_use_ssl=false
 
 # The RabbitMQ userid. (string value)
-#rabbit_userid=guest
+rabbit_userid=<%= @rabbit_userid %>
 
 # The RabbitMQ password. (string value)
-#rabbit_password=guest
+rabbit_password=<%= @rabbit_password %>
 
 # the RabbitMQ login method (string value)
 #rabbit_login_method=AMQPLAIN
 
 # The RabbitMQ virtual host. (string value)
-#rabbit_virtual_host=/
+rabbit_virtual_host=<%= @rabbit_virtual_host %>
 
 # How frequently to retry connecting with RabbitMQ. (integer
 # value)
