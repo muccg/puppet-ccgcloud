@@ -5,9 +5,9 @@
 auto lo
 iface lo inet loopback
 
-# the management nework (10.0.0.0/24)
+# the management network (10.0.0.0/24)
 auto br0
-iface br0 inet dhcp
+iface br0 inet static
     address 10.0.0.8<%= hostnum %>
     netmask 255.255.255.0
     network 10.0.0.0
