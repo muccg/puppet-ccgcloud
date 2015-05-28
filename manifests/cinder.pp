@@ -1,6 +1,7 @@
 #
 class ccgcloud::cinder::conf (
   $memcached_servers             = undef,
+  $auth_strategy                 = undef,
   $rbd_user                      = undef,
   $rbd_secret_uuid               = undef,
   $database_connection           = undef,
