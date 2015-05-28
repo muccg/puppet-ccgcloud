@@ -15,7 +15,6 @@ class ccgcloud {
     'iptraf',
     'mysql-client',
     'qemu-kvm',
-    'smartmontools',
     'strace',
     'sysfsutils',
     'tcpdump',
