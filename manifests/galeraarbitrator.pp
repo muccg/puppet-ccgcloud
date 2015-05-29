@@ -20,6 +20,7 @@ class ccgcloud::galeraarbitrator (
     group   => root,
     mode    => '0644',
     content => template('ccgcloud/garb.erb'),
+    notify  => Service['garb'],
     require => Package[$packages],
   }
 
