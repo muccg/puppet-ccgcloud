@@ -18,4 +18,14 @@ class ccgcloud::controller {
     content => template('ccgcloud/interfaces.erb'),
   }
 
+  $packages = [ 'python-keystoneclient',
+                'python-glanceclient',
+                'python-cinderclient',
+                'python-novaclient',
+                'python-openstackclient', ]
+
+  package { $packages:
+    ensure  => present
+  }
+
 }
