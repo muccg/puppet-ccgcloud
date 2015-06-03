@@ -14,6 +14,11 @@ class ccgcloud::galeraarbitrator (
     ensure => installed
   }
 
+  file { '/var/log/garb':
+    ensure => directory,
+    owner  => nobody,
+  }
+
   file { '/etc/default/garb':
     ensure  => present,
     owner   => root,
