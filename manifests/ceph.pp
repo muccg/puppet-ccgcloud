@@ -16,4 +16,8 @@ class ccgcloud::ceph (
     content => template('ccgcloud/ceph/ceph.conf.erb'),
     require => Package[$packages],
   }
+
+  file {'/etc/network/interfaces':
+    content => template('ccgcloud/ceph/interfaces.erb'),
+  }
 }
