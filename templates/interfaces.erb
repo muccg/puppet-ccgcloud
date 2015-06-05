@@ -28,6 +28,7 @@ iface br1 inet static
     bridge_ports p2p2.10
     bridge_maxwait 0
     up ifconfig $IFACE promisc
+    up ip route add default via 192.168.1.1
 
 # the external network (10.0.2.0/24)
 auto br2
