@@ -20,8 +20,6 @@ class ccgcloud::compute {
   ]
 
   $packages = [
-    'xfsprogs',
-    'mysql-client',
     'nova-compute',
     'nova-compute-kvm',
     'cinder-common',
