@@ -1,5 +1,9 @@
 #
-class ccgcloud::compute {
+class ccgcloud::compute(
+    $dmz_address = undef,
+    $dmz_netmask = undef,
+    $dmz_gateway = undef,
+) {
 
   include ccgcloud::openstack
 
