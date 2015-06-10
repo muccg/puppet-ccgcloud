@@ -28,8 +28,8 @@ glance_host = <%= @glance_host %>
 [database]
 connection = <%= @cinder_database %>
 [keystone_authtoken]
-auth_uri = <%= @auth_uri %>
-auth_host = <%= @auth_host %>
+auth_uri = <%= @keystone_auth_uri %>
+auth_host = <%= @keystone_auth_host %>
 auth_port = 35357
 auth_protocol = http
 admin_tenant_name = service
