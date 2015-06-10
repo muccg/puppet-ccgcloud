@@ -20,7 +20,7 @@ class ccgcloud::ceph::conf (
 }
 
 
-class ccgcloud::ceph::node (
+class ccgcloud::ceph::node () {
 
   $absent_packages = [ 'network-manager',
                        'resolvconf',
