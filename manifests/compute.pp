@@ -11,7 +11,7 @@ class ccgcloud::compute(
     $keystone_auth_host = undef,
     $glance_host = undef,
     $rabbit_host = undef,
-    $rabbit_user = undef,
+    $rabbit_userid = undef,
     $rabbit_password = undef,
     $rbd_user = undef,
     $rbd_secret_uuid = undef,
