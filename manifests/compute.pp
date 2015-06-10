@@ -13,6 +13,7 @@ class ccgcloud::compute(
     $rabbit_host = undef,
     $rabbit_userid = undef,
     $rabbit_password = undef,
+    $rabbit_virtual_host = undef,
     $rbd_user = undef,
     $rbd_secret_uuid = undef,
     $nova_admin_user = undef,
