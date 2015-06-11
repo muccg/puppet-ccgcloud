@@ -416,6 +416,11 @@ s3_store_create_bucket_on_put = False
 #s3_store_bucket_url_format = subdomain
  
 # ============ RBD Store Options =============================
+
+rbd_store_pool = images
+rbd_store_user = glance
+rbd_store_ceph_conf = /etc/ceph/ceph.conf
+rbd_store_chunk_size = 8
  
 # Ceph configuration file path
 # If using cephx authentication, this file should
@@ -674,9 +679,3 @@ flavor = keystone
 # This option will be applied when you using 'store_type' option as image
 # location strategy defined by the 'location_strategy' config option.
 #store_type_preference =
-[glance_store]
-stores = rbd
-rbd_store_pool = images
-rbd_store_user = glance
-rbd_store_ceph_conf = /etc/ceph/ceph.conf
-rbd_store_chunk_size = 8
