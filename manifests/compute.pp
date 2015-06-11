@@ -38,7 +38,6 @@ class ccgcloud::compute(
     'network-manager',
     'neutron-plugin-openvswitch-agent',
     'neutron-common',
-    'nova-network',
   ]
 
   $packages = [
@@ -48,6 +47,7 @@ class ccgcloud::compute(
     'openvswitch-common',
     'nova-api-metadata',
     'python-novaclient',
+    'nova-network',
   ]
 
   package { $absent_packages:
