@@ -9,7 +9,7 @@
 # in a request to add a new image to Glance? Known schemes are determined
 # by the known_stores option below.
 # Default: 'file'
-default_store = swift
+default_store = rbd
  
 # List of which store classes and store class locations are
 # currently known to glance at startup.
@@ -23,7 +23,7 @@ default_store = swift
 #      glance.store.vmware_datastore.Store,
 #known_stores = glance.store.filesystem.Store,
 #               glance.store.http.Store
-known_stores = glance.store.filesystem.Store, glance.store.swift.Store
+known_stores = glance.store.filesystem.Store, glance.store.rbd.Store
  
  
 # Maximum image size (in bytes) that may be uploaded through the
@@ -416,6 +416,11 @@ s3_store_create_bucket_on_put = False
 #s3_store_bucket_url_format = subdomain
  
 # ============ RBD Store Options =============================
+
+rbd_store_pool = images
+rbd_store_user = glance
+rbd_store_ceph_conf = /etc/ceph/ceph.conf
+rbd_store_chunk_size = 8
  
 # Ceph configuration file path
 # If using cephx authentication, this file should
@@ -653,9 +658,9 @@ connection = <%= @database_connection %>
 auth_host = <%= @keystone_auth_host %>
 auth_port = 35357
 auth_protocol = http
-admin_tenant_name = glance
-admin_user = <%= @keystone_auth_user %>
-admin_password = <%= @keystone_auth_password %>
+admin_tenant_name = service
+admin_user = <%= @keystone_admin_user %>
+admin_password = <%= @keystone_admin_password %>
  
 [paste_deploy]
 # Name of the paste configuration file that defines the available pipelines
@@ -666,6 +671,7 @@ admin_password = <%= @keystone_auth_password %>
 # [pipeline:glance-api-keystone], you would configure the flavor below
 # as 'keystone'.
 #flavor=
+flavor = keystone
  
 [store_type_location_strategy]
 # The scheme list to use to get store preference order. The scheme must be

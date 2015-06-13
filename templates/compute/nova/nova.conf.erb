@@ -20,7 +20,9 @@ vncserver_proxyclient_address=<%= @ipaddress_em3 %>
 novncproxy_base_url=http://<%= @novncproxy_host %>:6080/vnc_auto.html
 glance_host= <%= @glance_host %>
 rpc_backend = nova.rpc.impl_kombu
+rabbit_userid = <%= @rabbit_userid %>
 rabbit_host = <%= @rabbit_host %>
+rabbit_virtual_host = <%= @rabbit_virtual_host %>
 rabbit_port = 5672
 rabbit_password = <%= @rabbit_password %>
 sql_connection=<%= @nova_sql %>
@@ -47,3 +49,13 @@ force_dhcp_release=True
 
 network_api_class = nova.network.api.API
 security_group_api = nova
+
+auth_strategy=keystone
+[keystone_authtoken]
+auth_host = <%= @keystone_auth_host %>
+auth_port = 35357
+auth_protocol = http
+admin_tenant_name = service
+admin_user = <%= @nova_admin_user %>
+admin_password = <%= @nova_admin_password %>
+signing_dirname = /tmp/keystone-signing-nova

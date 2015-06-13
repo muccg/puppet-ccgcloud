@@ -4,9 +4,9 @@ iface lo inet loopback
 # DMZ network
 auto em1.10
 iface em1.10 inet static
-  address <%= dmz_address %>
-  netmask <%= dmz_netmask %>
-  gateway <%= dmz_gateway %>
+  address <%= @dmz_address %>
+  netmask <%= @dmz_netmask %>
+  gateway <%= @dmz_gateway %>
   up ifconfig $IFACE promisc
 
 # PUBLIC network

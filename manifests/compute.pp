@@ -1,5 +1,27 @@
 #
-class ccgcloud::compute {
+class ccgcloud::compute(
+    $cinder_admin_user = undef,
+    $cinder_admin_password = undef,
+    $cinder_database = undef,
+    $dmz_address = undef,
+    $dmz_gateway = undef,
+    $dmz_netmask = undef,
+    $flat_interface = undef,
+    $keystone_auth_uri = undef,
+    $keystone_auth_host = undef,
+    $glance_host = undef,
+    $rabbit_host = undef,
+    $rabbit_userid = undef,
+    $rabbit_password = undef,
+    $rabbit_virtual_host = undef,
+    $rbd_user = undef,
+    $rbd_secret_uuid = undef,
+    $nova_admin_user = undef,
+    $nova_admin_password = undef,
+    $nova_sql = undef,
+    $novncproxy_host = undef,
+    $public_interface = undef,
+) {
 
   include ccgcloud::openstack
 
@@ -16,18 +38,16 @@ class ccgcloud::compute {
     'network-manager',
     'neutron-plugin-openvswitch-agent',
     'neutron-common',
-    'nova-network',
   ]
 
   $packages = [
-    'xfsprogs',
-    'mysql-client',
     'nova-compute',
     'nova-compute-kvm',
     'cinder-common',
     'openvswitch-common',
     'nova-api-metadata',
     'python-novaclient',
+    'nova-network',
   ]
 
   package { $absent_packages:

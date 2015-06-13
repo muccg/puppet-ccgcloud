@@ -12,8 +12,9 @@ volumes_dir = /var/lib/cinder/volumes
 rpc_backend = cinder.openstack.common.rpc.impl_kombu
 rabbit_host = <%= @rabbit_host %>
 rabbit_port = 5672
-rabbit_userid = <%= @rabbit_user %>
+rabbit_userid = <%= @rabbit_userid %>
 rabbit_password = <%= @rabbit_password %>
+rabbit_virtual_host = <%= @rabbit_virtual_host %>
 # ceph for volumes
 volume_driver=cinder.volume.drivers.rbd.RBDDriver
 rbd_pool=volumes
@@ -28,8 +29,8 @@ glance_host = <%= @glance_host %>
 [database]
 connection = <%= @cinder_database %>
 [keystone_authtoken]
-auth_uri = <%= @auth_uri %>
-auth_host = <%= @auth_host %>
+auth_uri = <%= @keystone_auth_uri %>
+auth_host = <%= @keystone_auth_host %>
 auth_port = 35357
 auth_protocol = http
 admin_tenant_name = service

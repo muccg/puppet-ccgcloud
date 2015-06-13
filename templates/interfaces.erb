@@ -6,51 +6,37 @@ auto lo
 iface lo inet loopback
 
 # the management network (10.0.0.0/24)
-auto br0
-iface br0 inet static
+auto em1
+iface em1 inet static
     address 10.0.0.8<%= hostnum %>
     netmask 255.255.255.0
     network 10.0.0.0
     broadcast 10.0.0.255
-    bridge_ports em1
-    bridge_maxwait 0
-    up ifconfig $IFACE promisc
 
-# the old DMZ (192.168.1.0/24)
-auto br1 
-iface br1 inet static
+auto p2p2.10
+iface p2p2.10 inet static
     address 192.168.1.24<%= hostnum %>
     netmask 255.255.255.0
     network 192.168.1.0
     broadcast 192.168.1.255
     gateway 192.168.1.1
-    mtu 9000
-    bridge_ports p2p2.10
-    bridge_maxwait 0
-    up ifconfig $IFACE promisc
-    up ip route add default via 192.168.1.1
+    up ip link set p2p2 mtu 9000
 
 # the external network (10.0.2.0/24)
-auto br2
-iface br2 inet static
+auto p2p2.41
+iface p2p2.41 inet static
     address 10.0.2.8<%= hostnum %>
     netmask 255.255.255.0
     network 10.0.2.0
     broadcast 10.0.2.255
-    mtu 9000
-    bridge_ports p2p2.41
-    bridge_maxwait 0
-    up ifconfig $IFACE promisc
+    up ip link set p2p2 mtu 9000
 
 # the internal network (10.0.1.0/24)
-auto br3
-iface br3 inet static
+auto p2p1
+iface p2p1 inet static
     address 10.0.1.8<%= hostnum %>
     netmask 255.255.255.0
     network 10.0.1.0
     broadcast 10.0.1.255
-    mtu 9000
-    bridge_ports p2p1
-    bridge_maxwait 0
-    up ifconfig $IFACE promisc
+    up ip link set p2p1 mtu 9000
 
