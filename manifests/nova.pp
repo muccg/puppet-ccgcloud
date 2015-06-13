@@ -10,7 +10,7 @@ class ccgcloud::nova::conf (
   $novncproxy_base_url           = undef,
   $vncserver_proxyclient_address = undef,
   $vncserver_listen              = undef,
-  $keystone_auth_host            = undef,
+  $keystone_identity_uri         = 'http://127.0.0.1:35357',
   $keystone_admin_user           = undef,
   $keystone_admin_password       = undef,
   $rabbit_hosts                  = undef,

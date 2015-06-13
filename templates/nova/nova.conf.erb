@@ -72,9 +72,7 @@ vncserver_listen=<%= @vncserver_listen %>
 # AUTHENTICATION
 auth_strategy=keystone
 [keystone_authtoken]
-auth_host = <%= @keystone_auth_host %>
-auth_port = 35357
-auth_protocol = http
+identity_uri = <%= @keystone_identity_uri %>
 admin_tenant_name = service
 admin_user = <%= @keystone_admin_user %>
 admin_password = <%= @keystone_admin_password %>
