@@ -17,6 +17,7 @@ class ccgcloud::nova::conf (
   $rabbit_userid                 = undef,
   $rabbit_password               = undef,
   $rabbit_virtual_host           = '/',
+  $osapi_compute_workers         = '4',
 ) {
 
   file { '/etc/nova/api-paste.ini':
