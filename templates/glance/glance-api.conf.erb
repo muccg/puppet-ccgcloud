@@ -8,12 +8,6 @@ memcached_servers = <%= @memcached_servers %>
 # Show debugging output in logs (sets DEBUG log level output)
 #debug = False
  
-# Which backend scheme should Glance use by default is not specified
-# in a request to add a new image to Glance? Known schemes are determined
-# by the known_stores option below.
-# Default: 'file'
-default_store = rbd
- 
 # Maximum image size (in bytes) that may be uploaded through the
 # Glance API server. Defaults to 1 TB.
 # WARNING: this value should only be increased after careful consideration
@@ -433,6 +427,12 @@ favor = keystone
 # eventlet_executor_pool_size = 1000
  
 [glance_store]
+# Which backend scheme should Glance use by default is not specified
+# in a request to add a new image to Glance? Known schemes are determined
+# by the known_stores option below.
+# Default: 'file'
+default_store = rbd
+
 # List of which store classes and store class locations are
 # currently known to glance at startup.
 # Existing but disabled stores:
