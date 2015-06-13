@@ -1551,9 +1551,11 @@ driver = keystone.contrib.ec2.backends.sql.Ec2
 # "keystone.token.providers.[pkiz|pki|uuid].Provider". The
 # default provider is uuid. (string value)
 #provider=<None>
+provider = keystone.token.providers.uuid.Provider
  
 # Token persistence backend driver. (string value)
 #driver=keystone.token.persistence.backends.sql.Token
+driver = keystone.token.persistence.backends.sql.Token
  
 # Toggle for token system caching. This has no effect unless
 # global caching is enabled. (boolean value)
