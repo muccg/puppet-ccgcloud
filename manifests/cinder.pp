@@ -14,6 +14,7 @@ class ccgcloud::cinder::conf (
   $keystone_auth_host            = undef,
   $keystone_admin_user           = undef,
   $keystone_admin_password       = undef,
+  $osapi_volume_workers          = '4',
 ) {
 
   file { '/etc/cinder/api-paste.ini':
