@@ -5,7 +5,7 @@ class ccgcloud::glance::conf (
   $swift_store_auth_address      = undef,
   $swift_store_user              = undef,
   $swift_store_key               = undef,
-  $keystone_auth_host            = undef,
+  $keystone_identity_uri         = 'http://127.0.0.1:35357',
   $keystone_admin_user           = undef,
   $keystone_admin_password       = undef,
   $rabbit_host                   = undef,
