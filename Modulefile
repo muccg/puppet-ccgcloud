@@ -8,4 +8,4 @@ source       'git://github.com/muccg/puppet-ccgcloud'
 summary      'Puppet module for CCG OpenStack cloud nodes'
 description  'Installs and manages basic common dependencies for cloud nodes.'
 
-dependency 'puppetlabs/apt', '>=1.8.0'
+dependency 'puppetlabs/apt', '>=1.8.0 <2.0.0'
