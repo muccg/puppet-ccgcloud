@@ -1,4 +1,7 @@
 [DEFAULT]
+
+memcached_servers = <%= @memcached_servers %>
+
 # Show more verbose log output (sets INFO log level output)
 #verbose = False
  
@@ -10,21 +13,6 @@
 # by the known_stores option below.
 # Default: 'file'
 default_store = rbd
- 
-# List of which store classes and store class locations are
-# currently known to glance at startup.
-# Existing but disabled stores:
-#      glance.store.rbd.Store,
-#      glance.store.s3.Store,
-#      glance.store.swift.Store,
-#      glance.store.sheepdog.Store,
-#      glance.store.cinder.Store,
-#      glance.store.gridfs.Store,
-#      glance.store.vmware_datastore.Store,
-#known_stores = glance.store.filesystem.Store,
-#               glance.store.http.Store
-known_stores = glance.store.filesystem.Store, glance.store.rbd.Store
- 
  
 # Maximum image size (in bytes) that may be uploaded through the
 # Glance API server. Defaults to 1 TB.
@@ -56,12 +44,10 @@ backlog = 4096
 # package, it is also possible to use: glance.db.registry.api
 # data_api = glance.db.sqlalchemy.api
  
-# Number of Glance API worker processes to start.
-# On machines with more than one CPU increasing this value
-# may improve performance (especially if using SSL with
-# compression turned on). It is typically recommended to set
-# this value to the number of CPUs present on your machine.
-workers = 1
+# The number of child process workers that will be
+# created to service API requests. The default will be
+# equal to the number of CPUs available. (integer value)
+workers = <%= @workers %>
  
 # Maximum line size of message headers to be accepted.
 # max_header_line may need to be increased when using large tokens
@@ -120,11 +106,6 @@ workers = 1
 # property_protection_file.
 # The default value for property_protection_rule_format is 'roles'.
 #property_protection_rule_format = roles
- 
-# Specifies how long (in hours) a task is supposed to live in the tasks DB
-# after succeeding or failing before getting soft-deleted.
-# The default value for task_time_to_live is 48 hours.
-# task_time_to_live = 48
  
 # This value sets what strategy will be used to determine the image location
 # order. Currently two strategies are packaged with Glance 'location_order'
@@ -227,18 +208,15 @@ registry_client_protocol = http
  
 # ============ Notification System Options =====================
  
-# Notifications can be sent when images are create, updated or deleted.
-# There are three methods of sending notifications, logging (via the
-# log_file directive), rabbit (via a rabbitmq queue), qpid (via a Qpid
-# message queue), or noop (no notifications sent, the default)
-# NOTE: THIS CONFIGURATION OPTION HAS BEEN DEPRECATED IN FAVOR OF `notification_driver`
-# notifier_strategy = default
- 
-# Driver or drivers to handle sending notifications
+# Driver or drivers to handle sending notifications. Set to
+# 'messaging' to send notifications to a message queue.
 # notification_driver = noop
  
 # Default publisher_id for outgoing notifications.
 # default_publisher_id = image.localhost
+ 
+# Messaging driver used for 'messaging' notifications driver
+# rpc_backend = 'rabbit'
  
 # Configuration options if sending notifications via rabbitmq (these are
 # the defaults)
@@ -270,245 +248,6 @@ qpid_heartbeat = 5
 # Set to 'ssl' to enable SSL
 qpid_protocol = tcp
 qpid_tcp_nodelay = True
- 
-# ============ Filesystem Store Options ========================
- 
-# Directory that the Filesystem backend store
-# writes image data to
-filesystem_store_datadir = /var/lib/glance/images/
- 
-# A list of directories where image data can be stored.
-# This option may be specified multiple times for specifying multiple store
-# directories. Either one of filesystem_store_datadirs or
-# filesystem_store_datadir option is required. A priority number may be given
-# after each directory entry, separated by a ":".
-# When adding an image, the highest priority directory will be selected, unless
-# there is not enough space available in cases where the image size is already
-# known. If no priority is given, it is assumed to be zero and the directory
-# will be considered for selection last. If multiple directories have the same
-# priority, then the one with the most free space available is selected.
-# If same store is specified multiple times then BadStoreConfiguration
-# exception will be raised.
-#filesystem_store_datadirs = /var/lib/glance/images/:1
- 
-# A path to a JSON file that contains metadata describing the storage
-# system.  When show_multiple_locations is True the information in this
-# file will be returned with any location that is contained in this
-# store.
-#filesystem_store_metadata_file = None
- 
-# ============ Swift Store Options =============================
- 
-# Version of the authentication service to use
-# Valid versions are '2' for keystone and '1' for swauth and rackspace
-swift_store_auth_version = 2
- 
-# Address where the Swift authentication service lives
-# Valid schemes are 'http://' and 'https://'
-# If no scheme specified,  default to 'https://'
-# For swauth, use something like '127.0.0.1:8080/v1.0/'
-#swift_store_auth_address = 127.0.0.1:5000/v2.0/
-swift_store_auth_address = <%= @swift_store_auth_address %>
- 
-# User to authenticate against the Swift authentication service
-# If you use Swift authentication service, set it to 'account':'user'
-# where 'account' is a Swift storage account and 'user'
-# is a user in that account
-#swift_store_user = jdoe:jdoe
-swift_store_user = <%= @swift_store_user %>
- 
-# Auth key for the user authenticating against the
-# Swift authentication service
-#swift_store_key = a86850deb2742ec3cb41518e26aa2d89
-swift_store_key = <%= @swift_store_key %>
- 
-# Container within the account that the account should use
-# for storing images in Swift
-swift_store_container = glance
- 
-# Do we create the container if it does not exist?
-#swift_store_create_container_on_put = False
-swift_store_create_container_on_put = True
- 
-# What size, in MB, should Glance start chunking image files
-# and do a large object manifest in Swift? By default, this is
-# the maximum object size in Swift, which is 5GB
-swift_store_large_object_size = 5120
- 
-# When doing a large object manifest, what size, in MB, should
-# Glance write chunks to Swift? This amount of data is written
-# to a temporary disk buffer during the process of chunking
-# the image file, and the default is 200MB
-swift_store_large_object_chunk_size = 200
- 
-# Whether to use ServiceNET to communicate with the Swift storage servers.
-# (If you aren't RACKSPACE, leave this False!)
-#
-# To use ServiceNET for authentication, prefix hostname of
-# `swift_store_auth_address` with 'snet-'.
-# Ex. https://example.com/v1.0/ -> https://snet-example.com/v1.0/
-swift_enable_snet = False
- 
-# If set to True enables multi-tenant storage mode which causes Glance images
-# to be stored in tenant specific Swift accounts.
-#swift_store_multi_tenant = False
- 
-# A list of swift ACL strings that will be applied as both read and
-# write ACLs to the containers created by Glance in multi-tenant
-# mode. This grants the specified tenants/users read and write access
-# to all newly created image objects. The standard swift ACL string
-# formats are allowed, including:
-# <tenant_id>:<username>
-# <tenant_name>:<username>
-# *:<username>
-# Multiple ACLs can be combined using a comma separated list, for
-# example: swift_store_admin_tenants = service:glance,*:admin
-#swift_store_admin_tenants =
- 
-# The region of the swift endpoint to be used for single tenant. This setting
-# is only necessary if the tenant has multiple swift endpoints.
-#swift_store_region =
- 
-# If set to False, disables SSL layer compression of https swift requests.
-# Setting to 'False' may improve performance for images which are already
-# in a compressed format, eg qcow2. If set to True, enables SSL layer
-# compression (provided it is supported by the target swift proxy).
-#swift_store_ssl_compression = True
- 
-# The number of times a Swift download will be retried before the
-# request fails
-#swift_store_retry_get_count = 0
- 
-# ============ S3 Store Options =============================
- 
-# Address where the S3 authentication service lives
-# Valid schemes are 'http://' and 'https://'
-# If no scheme specified,  default to 'http://'
-s3_store_host = 127.0.0.1:8080/v1.0/
- 
-# User to authenticate against the S3 authentication service
-s3_store_access_key = <20-char AWS access key>
- 
-# Auth key for the user authenticating against the
-# S3 authentication service
-s3_store_secret_key = <40-char AWS secret key>
- 
-# Container within the account that the account should use
-# for storing images in S3. Note that S3 has a flat namespace,
-# so you need a unique bucket name for your glance images. An
-# easy way to do this is append your AWS access key to "glance".
-# S3 buckets in AWS *must* be lowercased, so remember to lowercase
-# your AWS access key if you use it in your bucket name below!
-s3_store_bucket = <lowercased 20-char aws access key>glance
- 
-# Do we create the bucket if it does not exist?
-s3_store_create_bucket_on_put = False
- 
-# When sending images to S3, the data will first be written to a
-# temporary buffer on disk. By default the platform's temporary directory
-# will be used. If required, an alternative directory can be specified here.
-#s3_store_object_buffer_dir = /path/to/dir
- 
-# When forming a bucket url, boto will either set the bucket name as the
-# subdomain or as the first token of the path. Amazon's S3 service will
-# accept it as the subdomain, but Swift's S3 middleware requires it be
-# in the path. Set this to 'path' or 'subdomain' - defaults to 'subdomain'.
-#s3_store_bucket_url_format = subdomain
- 
-# ============ RBD Store Options =============================
-
-rbd_store_pool = images
-rbd_store_user = glance
-rbd_store_ceph_conf = /etc/ceph/ceph.conf
-rbd_store_chunk_size = 8
- 
-# Ceph configuration file path
-# If using cephx authentication, this file should
-# include a reference to the right keyring
-# in a client.<USER> section
-#rbd_store_ceph_conf = /etc/ceph/ceph.conf
- 
-# RADOS user to authenticate as (only applicable if using cephx)
-# If <None>, a default will be chosen based on the client. section
-# in rbd_store_ceph_conf
-#rbd_store_user = <None>
- 
-# RADOS pool in which images are stored
-#rbd_store_pool = images
- 
-# RADOS images will be chunked into objects of this size (in megabytes).
-# For best performance, this should be a power of two
-#rbd_store_chunk_size = 8
- 
-# ============ Sheepdog Store Options =============================
- 
-sheepdog_store_address = localhost
- 
-sheepdog_store_port = 7000
- 
-# Images will be chunked into objects of this size (in megabytes).
-# For best performance, this should be a power of two
-sheepdog_store_chunk_size = 64
- 
-# ============ Cinder Store Options ===============================
- 
-# Info to match when looking for cinder in the service catalog
-# Format is : separated values of the form:
-# <service_type>:<service_name>:<endpoint_type> (string value)
-#cinder_catalog_info = volume:cinder:publicURL
- 
-# Override service catalog lookup with template for cinder endpoint
-# e.g. http://localhost:8776/v1/%(project_id)s (string value)
-#cinder_endpoint_template = <None>
- 
-# Region name of this node (string value)
-#os_region_name = <None>
- 
-# Location of ca certicates file to use for cinder client requests
-# (string value)
-#cinder_ca_certificates_file = <None>
- 
-# Number of cinderclient retries on failed http calls (integer value)
-#cinder_http_retries = 3
- 
-# Allow to perform insecure SSL requests to cinder (boolean value)
-#cinder_api_insecure = False
- 
-# ============ VMware Datastore Store Options =====================
- 
-# ESX/ESXi or vCenter Server target system.
-# The server value can be an IP address or a DNS name
-# e.g. 127.0.0.1, 127.0.0.1:443, www.vmware-infra.com
-#vmware_server_host = <None>
- 
-# Server username (string value)
-#vmware_server_username = <None>
- 
-# Server password (string value)
-#vmware_server_password = <None>
- 
-# Inventory path to a datacenter (string value)
-# Value optional when vmware_server_ip is an ESX/ESXi host: if specified
-# should be `ha-datacenter`.
-#vmware_datacenter_path = <None>
- 
-# Datastore associated with the datacenter (string value)
-#vmware_datastore_name = <None>
- 
-# The number of times we retry on failures
-# e.g., socket error, etc (integer value)
-#vmware_api_retry_count = 10
- 
-# The interval used for polling remote tasks
-# invoked on VMware ESX/VC server in seconds (integer value)
-#vmware_task_poll_interval = 5
- 
-# Absolute path of the folder containing the images in the datastore
-# (string value)
-#vmware_store_image_dir = /openstack_glance
- 
-# Allow to perform insecure SSL requests to the target system (boolean value)
-#vmware_api_insecure = False
  
 # ============ Delayed Delete Options =============================
  
@@ -546,20 +285,11 @@ scrubber_datadir = /var/lib/glance/scrubber
 # Base directory that the Image Cache uses
 image_cache_dir = /var/lib/glance/image-cache/
  
-# =============== Manager Options =================================
- 
-# DEPRECATED. TO BE REMOVED IN THE JUNO RELEASE.
-# Whether or not to enforce that all DB tables have charset utf8.
-# If your database tables do not have charset utf8 you will
-# need to convert before this option is removed. This option is
-# only relevant if your database engine is MySQL.
-#db_enforce_mysql_charset = True
- 
 # =============== Database Options =================================
  
 [database]
 # The file name to use with SQLite (string value)
-#sqlite_db = glance.sqlite
+#sqlite_db = oslo.sqlite
  
 # If True, SQLite uses synchronous mode (boolean value)
 #sqlite_synchronous = True
@@ -655,12 +385,11 @@ connection = <%= @database_connection %>
 #db_max_retries = 20
  
 [keystone_authtoken]
-auth_host = <%= @keystone_auth_host %>
-auth_port = 35357
-auth_protocol = http
+identity_uri = <%= @keystone_identity_uri %>
 admin_tenant_name = service
 admin_user = <%= @keystone_admin_user %>
 admin_password = <%= @keystone_admin_password %>
+revocation_cache_time = 10
  
 [paste_deploy]
 # Name of the paste configuration file that defines the available pipelines
@@ -671,7 +400,7 @@ admin_password = <%= @keystone_admin_password %>
 # [pipeline:glance-api-keystone], you would configure the flavor below
 # as 'keystone'.
 #flavor=
-flavor = keystone
+favor = keystone
  
 [store_type_location_strategy]
 # The scheme list to use to get store preference order. The scheme must be
@@ -679,3 +408,300 @@ flavor = keystone
 # This option will be applied when you using 'store_type' option as image
 # location strategy defined by the 'location_strategy' config option.
 #store_type_preference =
+ 
+[profiler]
+# If False fully disable profiling feature.
+#enabled = False
+ 
+# If False doesn't trace SQL requests.
+#trace_sqlalchemy = False
+ 
+[task]
+# ================= Glance Tasks Options ============================
+ 
+# Specifies how long (in hours) a task is supposed to live in the tasks DB
+# after succeeding or failing before getting soft-deleted.
+# The default value for task_time_to_live is 48 hours.
+# task_time_to_live = 48
+ 
+# Specifies which task executor to be used to run the task scripts.
+# The default value for task_executor is eventlet.
+# task_executor = eventlet
+ 
+# Specifies the maximum number of eventlet threads which can be spun up by
+# the eventlet based task executor to perform execution of Glance tasks.
+# eventlet_executor_pool_size = 1000
+ 
+[glance_store]
+# List of which store classes and store class locations are
+# currently known to glance at startup.
+# Existing but disabled stores:
+#      glance.store.rbd.Store,
+#      glance.store.s3.Store,
+#      glance.store.swift.Store,
+#      glance.store.sheepdog.Store,
+#      glance.store.cinder.Store,
+#      glance.store.gridfs.Store,
+#      glance.store.vmware_datastore.Store,
+#stores = glance.store.filesystem.Store,
+#         glance.store.http.Store
+stores = glance.store.filesystem.Store, glance.store.rbd.Store
+ 
+# ============ Filesystem Store Options ========================
+ 
+# Directory that the Filesystem backend store
+# writes image data to
+filesystem_store_datadir = /var/lib/glance/images/
+ 
+# A list of directories where image data can be stored.
+# This option may be specified multiple times for specifying multiple store
+# directories. Either one of filesystem_store_datadirs or
+# filesystem_store_datadir option is required. A priority number may be given
+# after each directory entry, separated by a ":".
+# When adding an image, the highest priority directory will be selected, unless
+# there is not enough space available in cases where the image size is already
+# known. If no priority is given, it is assumed to be zero and the directory
+# will be considered for selection last. If multiple directories have the same
+# priority, then the one with the most free space available is selected.
+# If same store is specified multiple times then BadStoreConfiguration
+# exception will be raised.
+#filesystem_store_datadirs = /var/lib/glance/images/:1
+ 
+# A path to a JSON file that contains metadata describing the storage
+# system.  When show_multiple_locations is True the information in this
+# file will be returned with any location that is contained in this
+# store.
+#filesystem_store_metadata_file = None
+ 
+# ============ Swift Store Options =============================
+ 
+# Version of the authentication service to use
+# Valid versions are '2' for keystone and '1' for swauth and rackspace
+swift_store_auth_version = 2
+ 
+# Address where the Swift authentication service lives
+# Valid schemes are 'http://' and 'https://'
+# If no scheme specified,  default to 'https://'
+# For swauth, use something like '127.0.0.1:8080/v1.0/'
+swift_store_auth_address = <%= @swift_store_auth_address %>
+ 
+# User to authenticate against the Swift authentication service
+# If you use Swift authentication service, set it to 'account':'user'
+# where 'account' is a Swift storage account and 'user'
+# is a user in that account
+swift_store_user = <%= @swift_store_user %>
+ 
+# Auth key for the user authenticating against the
+# Swift authentication service
+swift_store_key = <%= @swift_store_key %>
+ 
+# Container within the account that the account should use
+# for storing images in Swift
+swift_store_container = glance
+ 
+# Do we create the container if it does not exist?
+swift_store_create_container_on_put = True
+ 
+# What size, in MB, should Glance start chunking image files
+# and do a large object manifest in Swift? By default, this is
+# the maximum object size in Swift, which is 5GB
+swift_store_large_object_size = 5120
+ 
+# swift_store_config_file = glance-swift.conf
+# This file contains references for each of the configured
+# Swift accounts/backing stores. If used, this option can prevent
+# credentials being stored in the database. Using Swift references
+# is disabled if this config is left blank.
+ 
+# The reference to the default Swift parameters to use for adding new images.
+# default_swift_reference = 'ref1'
+ 
+# When doing a large object manifest, what size, in MB, should
+# Glance write chunks to Swift? This amount of data is written
+# to a temporary disk buffer during the process of chunking
+# the image file, and the default is 200MB
+swift_store_large_object_chunk_size = 200
+ 
+# Whether to use ServiceNET to communicate with the Swift storage servers.
+# (If you aren't RACKSPACE, leave this False!)
+#
+# To use ServiceNET for authentication, prefix hostname of
+# `swift_store_auth_address` with 'snet-'.
+# Ex. https://example.com/v1.0/ -> https://snet-example.com/v1.0/
+swift_enable_snet = False
+ 
+# If set to True enables multi-tenant storage mode which causes Glance images
+# to be stored in tenant specific Swift accounts.
+#swift_store_multi_tenant = False
+ 
+# A list of swift ACL strings that will be applied as both read and
+# write ACLs to the containers created by Glance in multi-tenant
+# mode. This grants the specified tenants/users read and write access
+# to all newly created image objects. The standard swift ACL string
+# formats are allowed, including:
+# <tenant_id>:<username>
+# <tenant_name>:<username>
+# *:<username>
+# Multiple ACLs can be combined using a comma separated list, for
+# example: swift_store_admin_tenants = service:glance,*:admin
+#swift_store_admin_tenants =
+ 
+# The region of the swift endpoint to be used for single tenant. This setting
+# is only necessary if the tenant has multiple swift endpoints.
+#swift_store_region =
+ 
+# If set to False, disables SSL layer compression of https swift requests.
+# Setting to 'False' may improve performance for images which are already
+# in a compressed format, eg qcow2. If set to True, enables SSL layer
+# compression (provided it is supported by the target swift proxy).
+#swift_store_ssl_compression = True
+ 
+# The number of times a Swift download will be retried before the
+# request fails
+#swift_store_retry_get_count = 0
+ 
+# Bypass SSL verification for Swift
+#swift_store_auth_insecure = False
+ 
+# ============ S3 Store Options =============================
+ 
+# Address where the S3 authentication service lives
+# Valid schemes are 'http://' and 'https://'
+# If no scheme specified,  default to 'http://'
+s3_store_host = 127.0.0.1:8080/v1.0/
+ 
+# User to authenticate against the S3 authentication service
+s3_store_access_key = <20-char AWS access key>
+ 
+# Auth key for the user authenticating against the
+# S3 authentication service
+s3_store_secret_key = <40-char AWS secret key>
+ 
+# Container within the account that the account should use
+# for storing images in S3. Note that S3 has a flat namespace,
+# so you need a unique bucket name for your glance images. An
+# easy way to do this is append your AWS access key to "glance".
+# S3 buckets in AWS *must* be lowercased, so remember to lowercase
+# your AWS access key if you use it in your bucket name below!
+s3_store_bucket = <lowercased 20-char aws access key>glance
+ 
+# Do we create the bucket if it does not exist?
+s3_store_create_bucket_on_put = False
+ 
+# When sending images to S3, the data will first be written to a
+# temporary buffer on disk. By default the platform's temporary directory
+# will be used. If required, an alternative directory can be specified here.
+#s3_store_object_buffer_dir = /path/to/dir
+ 
+# When forming a bucket url, boto will either set the bucket name as the
+# subdomain or as the first token of the path. Amazon's S3 service will
+# accept it as the subdomain, but Swift's S3 middleware requires it be
+# in the path. Set this to 'path' or 'subdomain' - defaults to 'subdomain'.
+#s3_store_bucket_url_format = subdomain
+ 
+# Size, in MB, should S3 start chunking image files
+# and do a multipart upload in S3. The default is 100MB.
+#s3_store_large_object_size = 100
+ 
+# Multipart upload part size, in MB, should S3 use when uploading
+# parts. The size must be greater than or equal to
+# 5MB. The default is 10MB.
+#s3_store_large_object_chunk_size = 10
+ 
+# The number of thread pools to perform a multipart upload
+# in S3. The default is 10.
+#s3_store_thread_pools = 10
+ 
+# ============ RBD Store Options =============================
+ 
+# Ceph configuration file path
+# If using cephx authentication, this file should
+# include a reference to the right keyring
+# in a client.<USER> section
+#rbd_store_ceph_conf = /etc/ceph/ceph.conf
+rbd_store_ceph_conf = /etc/ceph/ceph.conf
+ 
+# RADOS user to authenticate as (only applicable if using cephx)
+# If <None>, a default will be chosen based on the client. section
+# in rbd_store_ceph_conf
+#rbd_store_user = <None>
+rbd_store_user = glance
+ 
+# RADOS pool in which images are stored
+#rbd_store_pool = images
+bd_store_pool = images
+ 
+# RADOS images will be chunked into objects of this size (in megabytes).
+# For best performance, this should be a power of two
+#rbd_store_chunk_size = 8
+rbd_store_chunk_size = 8
+ 
+# ============ Sheepdog Store Options =============================
+ 
+sheepdog_store_address = localhost
+ 
+sheepdog_store_port = 7000
+ 
+# Images will be chunked into objects of this size (in megabytes).
+# For best performance, this should be a power of two
+sheepdog_store_chunk_size = 64
+ 
+# ============ Cinder Store Options ===============================
+ 
+# Info to match when looking for cinder in the service catalog
+# Format is : separated values of the form:
+# <service_type>:<service_name>:<endpoint_type> (string value)
+#cinder_catalog_info = volume:cinder:publicURL
+ 
+# Override service catalog lookup with template for cinder endpoint
+# e.g. http://localhost:8776/v1/%(project_id)s (string value)
+#cinder_endpoint_template = <None>
+ 
+# Region name of this node (string value)
+#os_region_name = <None>
+ 
+# Location of ca certicates file to use for cinder client requests
+# (string value)
+#cinder_ca_certificates_file = <None>
+ 
+# Number of cinderclient retries on failed http calls (integer value)
+#cinder_http_retries = 3
+ 
+# Allow to perform insecure SSL requests to cinder (boolean value)
+#cinder_api_insecure = False
+ 
+# ============ VMware Datastore Store Options =====================
+ 
+# ESX/ESXi or vCenter Server target system.
+# The server value can be an IP address or a DNS name
+# e.g. 127.0.0.1, 127.0.0.1:443, www.vmware-infra.com
+#vmware_server_host = <None>
+ 
+# Server username (string value)
+#vmware_server_username = <None>
+ 
+# Server password (string value)
+#vmware_server_password = <None>
+ 
+# Inventory path to a datacenter (string value)
+# Value optional when vmware_server_ip is an ESX/ESXi host: if specified
+# should be `ha-datacenter`.
+#vmware_datacenter_path = <None>
+ 
+# Datastore associated with the datacenter (string value)
+#vmware_datastore_name = <None>
+ 
+# The number of times we retry on failures
+# e.g., socket error, etc (integer value)
+#vmware_api_retry_count = 10
+ 
+# The interval used for polling remote tasks
+# invoked on VMware ESX/VC server in seconds (integer value)
+#vmware_task_poll_interval = 5
+ 
+# Absolute path of the folder containing the images in the datastore
+# (string value)
+#vmware_store_image_dir = /openstack_glance
+ 
+# Allow to perform insecure SSL requests to the target system (boolean value)
+#vmware_api_insecure = False

@@ -12,6 +12,7 @@ class ccgcloud::glance::conf (
   $rabbit_userid                 = undef,
   $rabbit_password               = undef,
   $rabbit_virtual_host           = '/',
+  $workers                       = '4',
 ) {
 
   file { '/etc/glance/glance-api.conf':
