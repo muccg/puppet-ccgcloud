@@ -1,7 +1,7 @@
 #
 class ccgcloud::nova::conf (
   $memcached_servers             = undef,
-  $sql_connection                = undef,
+  $database_connection           = undef,
   $my_ip                         = undef,
   $public_interface              = undef,
   $ec2_dmz_host                  = undef,
