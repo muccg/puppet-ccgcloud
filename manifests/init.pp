@@ -3,7 +3,7 @@ class ccgcloud {
 
   apt::source { 'ubuntu-cloud-archive':
     location          => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
-    release           => "${::lsbdistcodename}-updates/juno",
+    release           => "${::lsbdistcodename}-updates/kilo",
     repos             => 'main',
     required_packages => 'ubuntu-cloud-keyring',
   }
