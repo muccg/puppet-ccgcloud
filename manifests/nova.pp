@@ -4,6 +4,7 @@ class ccgcloud::nova::conf (
   $database_connection           = undef,
   $my_ip                         = undef,
   $public_interface              = undef,
+  $flat_interface                = undef,
   $ec2_dmz_host                  = undef,
   $s3_host                       = undef,
   $glance_api_servers            = undef,
