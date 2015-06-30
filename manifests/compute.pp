@@ -33,6 +33,7 @@ class ccgcloud::compute(
     'nova-api-metadata',
     'python-novaclient',
     'nova-network',
+    'python-memcache',
   ]
 
   package { $absent_packages:
