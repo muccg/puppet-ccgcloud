@@ -87,3 +87,7 @@ connection=<%= @database_connection %>
 # LIBVIRT
 [libvirt]
 virt_type=qemu
+
+[workarounds]
+# workaround particularly nasty nova / libvirt bug in Kilo
+destroy_after_evacuate = False
