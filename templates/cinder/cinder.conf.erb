@@ -1,8 +1,4 @@
 [DEFAULT]
-
-# Print more verbose output (set logging level to INFO instead
-# of default WARNING level). (boolean value)
-#verbose=false
 verbose=true
 
 #
@@ -343,12 +339,14 @@ osapi_volume_workers = <%= @osapi_volume_workers %>
 
 # The maximum size in bytes of the files used to hold backups.
 # If the volume being backed up exceeds this size, then it
-# will be backed up into multiple files. (integer value)
+# will be backed up into multiple files. backup_file_size must
+# be a multiple of backup_sha_block_size_bytes. (integer
+# value)
 #backup_file_size=1999994880
 
 # The size in bytes that changes are tracked for incremental
-# backups. backup_swift_object_size has to be multiple of
-# backup_swift_block_size. (integer value)
+# backups. backup_file_size has to be multiple of
+# backup_sha_block_size_bytes. (integer value)
 #backup_sha_block_size_bytes=32768
 
 # Enable or Disable the timer to send the periodic progress
@@ -508,6 +506,7 @@ osapi_volume_workers = <%= @osapi_volume_workers %>
 #glance_api_servers=$glance_host:$glance_port
 
 # Version of the glance API to use (integer value)
+#glance_api_version=1
 glance_api_version=2
 
 # Number retries when downloading an image from glance
@@ -2800,6 +2799,7 @@ rabbit_virtual_host=<%= @rabbit_virtual_host %>
 # Use HA queues in RabbitMQ (x-ha-policy: all). If you change
 # this option, you must wipe the RabbitMQ database. (boolean
 # value)
+#rabbit_ha_queues=false
 rabbit_ha_queues=true
 
 # Number of seconds after which the Rabbit broker is
