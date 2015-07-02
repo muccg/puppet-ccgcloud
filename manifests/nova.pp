@@ -21,6 +21,7 @@ class ccgcloud::nova::conf (
   $osapi_compute_workers         = '4',
   $metadata_workers              = '4',
   $conductor_workers             = '4',
+  $ec2_workers                   = '4',
 ) {
 
   file { '/etc/nova/api-paste.ini':
