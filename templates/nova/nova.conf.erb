@@ -2,6 +2,7 @@
 
 memcached_servers = <%= @memcached_servers %>
 osapi_compute_workers = <%= @osapi_compute_workers %>
+metadata_workers = <%= @metadata_workers %>
 
 # LOGS/STATE
 verbose=True
@@ -83,6 +84,9 @@ api_servers=<%= @glance_api_servers %>
 # DATABASE
 [database]
 connection=<%= @database_connection %>
+
+[conductor]
+workers = <%= @conductor_workers %>
 
 # LIBVIRT
 [libvirt]
