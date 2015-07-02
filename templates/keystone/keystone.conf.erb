@@ -550,11 +550,13 @@ connection = <%= @database_connection %>
 # Defaults to number of CPUs (minimum of 2). (integer value)
 # Deprecated group/name - [DEFAULT]/public_workers
 #public_workers = <None>
+public_workers = <%= @public_workers %>
 
 # The number of worker processes to serve the admin eventlet application.
 # Defaults to number of CPUs (minimum of 2). (integer value)
 # Deprecated group/name - [DEFAULT]/admin_workers
 #admin_workers = <None>
+admin_workers = <%= @admin_workers %>
 
 # The IP address of the network interface for the public service to listen on.
 # (string value)
