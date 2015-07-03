@@ -3,6 +3,8 @@ class ccgcloud::keystone::conf (
   $admin_token            = undef,
   $bind_host              = '0.0.0.0',
   $cache_backend_argument = 'url:127.0.0.1:11211',
+  $public_workers         = '4',
+  $admin_workers          = '4',
   $database_connection    = undef,
   $rabbit_hosts           = undef,
   $rabbit_userid          = undef,

@@ -1,6 +1,13 @@
 #
 class ccgcloud {
 
+  apt::source { 'ubuntu-cloud-archive':
+    location          => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
+    release           => "${::lsbdistcodename}-updates/kilo",
+    repos             => 'main',
+    required_packages => 'ubuntu-cloud-keyring',
+  }
+
   $absent_packages = [
     'resolvconf',
     'ufw',
@@ -10,10 +17,11 @@ class ccgcloud {
     'bridge-utils',
     'ethtool',
     'gdisk',
-    'iotop',
     'htop',
+    'iotop',
+    'ipset',
     'iptraf',
-    'mysql-client',
+    'mariadb-client',
     'qemu-kvm',
     'strace',
     'sysfsutils',

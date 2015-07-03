@@ -1,27 +1,12 @@
 #
 class ccgcloud::compute(
-    $cinder_admin_user = undef,
-    $cinder_admin_password = undef,
-    $cinder_database = undef,
     $dmz_address = undef,
     $dmz_gateway = undef,
     $dmz_netmask = undef,
-    $flat_interface = undef,
-    $keystone_auth_uri = undef,
-    $keystone_auth_host = undef,
-    $glance_host = undef,
-    $rabbit_host = undef,
-    $rabbit_userid = undef,
-    $rabbit_password = undef,
-    $rabbit_virtual_host = undef,
-    $rbd_user = undef,
-    $rbd_secret_uuid = undef,
-    $nova_admin_user = undef,
-    $nova_admin_password = undef,
-    $nova_sql = undef,
-    $novncproxy_host = undef,
-    $public_interface = undef,
 ) {
+
+  require ccgcloud::nova::conf
+  require ccgcloud::cinder::conf
 
   include ccgcloud::openstack
 
@@ -62,46 +47,6 @@ class ccgcloud::compute(
 
   file {'/etc/network/interfaces':
     content => template('ccgcloud/compute/interfaces.erb'),
-  }
-
-  file { '/etc/nova/api-paste.ini':
-    ensure  => present,
-    owner   => root,
-    group   => root,
-    mode    => '0644',
-    content => template('ccgcloud/compute/nova/api-paste.ini.erb'),
-    require => Package[$packages],
-    notify  => Service['nova-compute'],
-  }
-
-  file { '/etc/nova/nova.conf':
-    ensure  => present,
-    owner   => root,
-    group   => root,
-    mode    => '0644',
-    content => template('ccgcloud/compute/nova/nova.conf.erb'),
-    require => Package[$packages],
-    notify  => Service['nova-compute'],
-  }
-
-  file { '/etc/cinder/api-paste.ini':
-    ensure  => present,
-    owner   => root,
-    group   => root,
-    mode    => '0644',
-    content => template('ccgcloud/compute/cinder/api-paste.ini.erb'),
-    require => Package[$packages],
-    notify  => Service['cinder-volume'],
-  }
-
-  file { '/etc/cinder/cinder.conf':
-    ensure  => present,
-    owner   => root,
-    group   => root,
-    mode    => '0644',
-    content => template('ccgcloud/compute/cinder/cinder.conf.erb'),
-    require => Package[$packages],
-    notify  => Service['cinder-volume'],
   }
 
   service { 'nova-compute':

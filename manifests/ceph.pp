@@ -5,7 +5,10 @@ class ccgcloud::ceph::conf (
   $mon_host                 = undef,
   $public_network           = undef,
   $cluster_network          = undef,
+  $osd_backfill_scan_min    = undef,
+  $osd_backfill_scan_max    = undef,
   $osd_recovery_max_active  = undef,
+  $osd_recovery_op_priority = undef,
 ) {
 
   file { '/etc/ceph/ceph.conf':

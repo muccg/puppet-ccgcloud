@@ -1,10 +1,13 @@
 [DEFAULT]
 
 memcached_servers = <%= @memcached_servers %>
+osapi_compute_workers = <%= @osapi_compute_workers %>
+metadata_workers = <%= @metadata_workers %>
+ec2_workers = <%= @ec2_workers %>
 
 # LOGS/STATE
 verbose=True
-logdir=/var/log/nova
+log_dir=/var/log/nova
 state_path=/var/lib/nova
 lock_path=/var/lock/nova
 rootwrap_config=/etc/nova/rootwrap.conf
@@ -13,41 +16,12 @@ rootwrap_config=/etc/nova/rootwrap.conf
 compute_scheduler_driver=nova.scheduler.filter_scheduler.FilterScheduler
 
 # VOLUMES
-volume_driver=nova.volume.driver.ISCSIDriver
-volume_group=nova-volumes
-volume_name_template=volume-%s
-iscsi_helper=tgtadm
-
-# DATABASE
-sql_connection=<%= @sql_connection %>
+# configured in cinder.conf
 
 # COMPUTE
-libvirt_type=qemu
 compute_driver=libvirt.LibvirtDriver
 instance_name_template=instance-%08x
 api_paste_config=/etc/nova/api-paste.ini
-
-# NETWORK
-my_ip=<%= @my_ip %>
-dhcpbridge_flagfile=/etc/nova/nova.conf
-dhcpbridge=/usr/bin/nova-dhcpbridge
-network_manager=nova.network.manager.FlatDHCPManager
-fixed_range=''
-
-# tm
-network_api_class = nova.network.api.API
-security_group_api = nova
-
-flat_injected=False
-public_interface=<%= @public_interface %>
-firewall_driver=nova.virt.libvirt.firewall.IptablesFirewallDriver
-network_size=254
-allow_same_net_traffic=True
-multi_host=True
-send_arp_for_ha=True
-share_dhcp_address=True
-force_dhcp_release=True
-
 
 # COMPUTE/APIS: if you have separate configs for separate services
 # this flag is required for both nova-api and nova-compute
@@ -59,7 +33,7 @@ ec2_dmz_host=<%= @ec2_dmz_host %>
 s3_host=<%= @s3_host %>
 
 # RABBITMQ
-rpc_backend = nova.rpc.impl_kombu
+#rpc_backend = heat.openstack.common.rpc.impl_kombu
 rabbit_port = 5672
 # Use HA queues in RabbitMQ (x-ha-policy: all). If you change
 # this option, you must wipe the RabbitMQ database. (boolean
@@ -75,10 +49,20 @@ rabbit_password=<%= @rabbit_password %>
 # The RabbitMQ virtual host. (string value)
 rabbit_virtual_host=<%= @rabbit_virtual_host %>
 
-
 # GLANCE
 image_service=nova.image.glance.GlanceImageService
-glance_api_servers=<%= @glance_api_servers %>
+
+# NETWORK
+network_manager=nova.network.manager.FlatDHCPManager
+force_dhcp_release=True
+dhcpbridge_flagfile=/etc/nova/nova.conf
+firewall_driver=nova.virt.libvirt.firewall.IptablesFirewallDriver
+# Change my_ip to match each host
+my_ip=<%= @my_ip %>
+# vlan_interface=eth0
+flat_interface=<%= @flat_interface %>
+public_interface=<%= @public_interface %>
+dns_server=<%= @dns_server %>
 
 # NOVNC CONSOLE
 novncproxy_base_url=<%= @novncproxy_base_url %>
@@ -89,10 +73,27 @@ vncserver_listen=<%= @vncserver_listen %>
 # AUTHENTICATION
 auth_strategy=keystone
 [keystone_authtoken]
-auth_host = <%= @keystone_auth_host %>
-auth_port = 35357
-auth_protocol = http
+identity_uri = <%= @keystone_identity_uri %>
 admin_tenant_name = service
 admin_user = <%= @keystone_admin_user %>
 admin_password = <%= @keystone_admin_password %>
 signing_dirname = /tmp/keystone-signing-nova
+
+# GLANCE
+[glance]
+api_servers=<%= @glance_api_servers %>
+
+# DATABASE
+[database]
+connection=<%= @database_connection %>
+
+[conductor]
+workers = <%= @conductor_workers %>
+
+# LIBVIRT
+[libvirt]
+virt_type=qemu
+
+[workarounds]
+# workaround particularly nasty nova / libvirt bug in Kilo
+destroy_after_evacuate = False
