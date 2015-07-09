@@ -6,6 +6,7 @@ class ccgcloud::compute(
 ) {
 
   require ccgcloud::nova::conf
+  require ccgcloud::libvirt::conf
   require ccgcloud::cinder::conf
 
   include ccgcloud::openstack
@@ -71,6 +72,14 @@ class ccgcloud::compute(
     provider  => upstart,
     require   => Package[$packages],
     subscribe => File['/etc/nova/nova.conf'],
+  }
+
+  service { 'libvirt-bin':
+    ensure    => running,
+    enable    => true,
+    provider  => upstart,
+    require   => Package[$packages],
+    subscribe => File['/etc/libvirt/libvirtd.conf'],
   }
 
   service { 'nova-api-metadata':
