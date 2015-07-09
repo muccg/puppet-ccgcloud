@@ -23,6 +23,8 @@ class ccgcloud::nova::conf (
   $conductor_workers             = '4',
   $ec2_workers                   = '4',
   $dns_server                    = '8.8.8.8',
+  $rbd_user                      = undef,
+  $rbd_secret_uuid               = undef,
 ) {
 
   file { '/etc/nova/api-paste.ini':
