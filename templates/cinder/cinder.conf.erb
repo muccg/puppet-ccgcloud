@@ -1,6 +1,5 @@
 [DEFAULT]
 verbose=true
-lock_path=/var/lock/cinder
 
 #
 # Options defined in oslo.messaging
@@ -3006,3 +3005,6 @@ admin_password = <%= @keystone_admin_password %>
 # Service tenant name. (string value)
 #admin_tenant_name = admin
 admin_tenant_name = service
+
+[oslo_concurrency]
+lock_path=/var/lock/cinder
