@@ -57,8 +57,17 @@ image_service=nova.image.glance.GlanceImageService
 # NETWORK
 network_manager=nova.network.manager.FlatDHCPManager
 force_dhcp_release=True
+share_dhcp_address=True
 dhcpbridge_flagfile=/etc/nova/nova.conf
+dhcpbridge=/usr/bin/nova-dhcpbridge
+dnsmasq_config_file=/etc/nova/dnsmasq.conf
+multi_host=True
+allow_same_net_traffic=True
+send_arp_for_ha=True
+network_size=254
+
 firewall_driver=nova.virt.libvirt.firewall.IptablesFirewallDriver
+security_group_api=nova
 # Change my_ip to match each host
 my_ip=<%= @my_ip %>
 # vlan_interface=eth0
