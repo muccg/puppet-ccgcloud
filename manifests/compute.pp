@@ -6,6 +6,7 @@ class ccgcloud::compute(
 ) {
 
   require ccgcloud::nova::conf
+  require ccgcloud::novanetwork
   require ccgcloud::libvirt::conf
   require ccgcloud::cinder::conf
 
