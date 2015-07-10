@@ -41,4 +41,12 @@ class ccgcloud::glance::conf (
     content => template('ccgcloud/glance/glance-cache.conf.erb'),
   }
 
+  file { '/etc/glance/policy.json':
+    ensure  => present,
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    content => template('ccgcloud/glance/policy.json.erb'),
+  }
+
 }
