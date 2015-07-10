@@ -4,6 +4,7 @@ class ccgcloud::horizon::conf (
   $debug             = 'False',
   $caches_location   = "['localhost:11211',]",
   $openstack_host    = "127.0.0.1",
+  $session_timeout   = "14400",
 ) {
 
   file { '/etc/openstack-dashboard/local_settings.py':
