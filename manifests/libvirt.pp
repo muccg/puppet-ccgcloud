@@ -15,4 +15,12 @@ class ccgcloud::libvirt::conf {
     mode    => '0644',
     content => template('ccgcloud/libvirt/libvirt-bin.erb'),
   }
+
+  file { '/etc/security/limits.conf':
+    ensure  => present,
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    content => template('ccgcloud/libvirt/limits.conf.erb'),
+  }
 }

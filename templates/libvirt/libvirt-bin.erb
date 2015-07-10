@@ -7,5 +7,9 @@ start_libvirtd="yes"
 # options passed to libvirtd, add "-l" to listen on tcp
 libvirtd_opts="-d -l"
 
+# rbd needs all of the file descriptors
+ulimit -Hn 40000
+ulimit -Sn 40000
+
 # pass in location of kerberos keytab
 #export KRB5_KTNAME=/etc/libvirt/libvirt.keytab
