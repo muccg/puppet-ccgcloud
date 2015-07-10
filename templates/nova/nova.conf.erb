@@ -110,6 +110,7 @@ images_rbd_pool = vms
 images_rbd_ceph_conf = /etc/ceph/ceph.conf
 rbd_user = <%= rbd_user %>
 rbd_secret_uuid = <%= rbd_secret_uuid %>
+disk_cachemodes="network=none"
 inject_password = false
 inject_key = false
 inject_partition = -2
