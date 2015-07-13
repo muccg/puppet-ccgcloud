@@ -9,6 +9,10 @@ class ccgcloud::ceph::conf (
   $osd_backfill_scan_max    = undef,
   $osd_recovery_max_active  = undef,
   $osd_recovery_op_priority = undef,
+  $rbd_cache                = 'true',
+  $rbd_cache_size           = '33554432',
+  $rbd_cache_max_dirty      = '25165824',
+  $rbd_cache_max_dirty_age  = '1',
 ) {
 
   file { '/etc/ceph/ceph.conf':

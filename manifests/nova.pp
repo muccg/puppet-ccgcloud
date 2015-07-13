@@ -26,6 +26,7 @@ class ccgcloud::nova::conf (
   $dns_server                    = '8.8.8.8',
   $rbd_user                      = undef,
   $rbd_secret_uuid               = undef,
+  $cachemodes                    = 'writeback',
 ) {
 
   file { '/etc/nova/api-paste.ini':

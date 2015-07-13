@@ -14,3 +14,9 @@ osd recovery max active = <%= @osd_recovery_max_active %>
 osd backfill scan min = <%= @osd_backfill_scan_min %>
 osd backfill scan max = <%= @osd_backfill_scan_max %>
 osd recovery op priority = <%= @osd_recovery_op_priority %>
+
+[rbd]
+rbd cache = <%= @rbd_cache =>
+rbd cache size = <%= @rbd_cache_size %>
+rbd cache max dirty = <%= @rbd_cache_max_dirty %>
+rbd cache max dirty age = <%= @rbd_cache_max_dirty %>
