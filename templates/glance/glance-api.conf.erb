@@ -531,7 +531,7 @@ favor = keystone
 #      glance.store.vmware_datastore.Store,
 #stores = glance.store.filesystem.Store,
 #         glance.store.http.Store
-stores = glance.store.filesystem.Store, glance.store.rbd.Store
+stores = glance.store.filesystem.Store, glance.store.rbd.Store, glance.store.http.Store
 
 # Which backend scheme should Glance use by default is not specified
 # in a request to add a new image to Glance? Known schemes are determined
