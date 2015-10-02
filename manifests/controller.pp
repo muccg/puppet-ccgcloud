@@ -22,10 +22,15 @@ class ccgcloud::controller {
                 'python-glanceclient',
                 'python-cinderclient',
                 'python-novaclient',
-                'python-openstackclient', ]
+                'python-openstackclient',
+                'postfix' ]
 
   package { $packages:
     ensure  => present
   }
 
+  # postfix config for UPS monitoring
+  file {'/etc/postfix/main.cf':
+    content => template('ccgcloud/main.cf.erb'),
+  }
 }
