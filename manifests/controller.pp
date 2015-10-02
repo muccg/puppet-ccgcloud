@@ -33,4 +33,12 @@ class ccgcloud::controller {
   file {'/etc/postfix/main.cf':
     content => template('ccgcloud/main.cf.erb'),
   }
+
+  service { 'postfix':
+    ensure    => running,
+    enable    => true,
+    provider  => upstart,
+    require   => Package[$packages],
+    subscribe => File['/etc/postfix/main.cf'],
+  }
 }
