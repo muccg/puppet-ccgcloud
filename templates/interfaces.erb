@@ -16,9 +16,9 @@ iface em1 inet static
 # UPS monitoring network. note this is a direct P2P link
 # for now, so both controllers have same address. if a
 # a controller fails, move the cable
-auto em1
-iface em1 inet static
-    address 172.30.0.3
+auto em2
+iface em2 inet static
+    address 172.30.0.<%= hostnum %>
     netmask 255.255.255.0
     network 172.30.0.0
     broadcast 172.30.0.255
