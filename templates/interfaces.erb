@@ -18,7 +18,7 @@ iface em1 inet static
 # a controller fails, move the cable
 auto em2
 iface em2 inet static
-    address 172.30.0.<%= hostnum %>
+    address 172.30.0.1<%= hostnum %>
     netmask 255.255.255.0
     network 172.30.0.0
     broadcast 172.30.0.255
